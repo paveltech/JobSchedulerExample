@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final String MESSENGER_KEY = "MESSENGER_KEY";
     private static final String TAG = MainActivity.class.getSimpleName();
 
-
     private static int jobID = 0;
     private ProgressHandler progressHandler;
 
@@ -52,6 +51,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         scheduleJobButton.setOnClickListener(this);
         cancelJobButton.setOnClickListener(this);
 
+        ComponentName componentName = new ComponentName(this , JobScheduleService.class);
+        final JobInfo jobInfo = new JobInfo.Builder(++jobID , componentName)
+                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                .build();
+        JobScheduler jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
+        jobScheduler.schedule(jobInfo);
     }
 
 
@@ -77,6 +82,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()){
             case R.id.button_schedule_job:
                 Log.d(TAG, "Scheduling job");
+
+
                 ComponentName componentName = new ComponentName(this , JobScheduleService.class);
                 final JobInfo jobInfo = new JobInfo.Builder(++jobID , componentName)
                         .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
@@ -105,5 +112,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         }
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
     }
 }

@@ -4,6 +4,8 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.android.jobschedulerexample"
+
+        useLibrary  'org.apache.http.legacy'
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
