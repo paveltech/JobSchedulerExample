@@ -1,6 +1,7 @@
 package com.example.android.jobschedulerexample;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.job.JobParameters;
@@ -64,20 +65,36 @@ public class JobScheduleService extends JobService {
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setTicker("Job Scheduler")
-                //.setContentTitle(context.getString(R.string.app_name))
-                .setLargeIcon(getBitmap(imageLink))
-                .setContentTitle(appName)
-                .setContentText(appPackageName)
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(true);
-
-
+        /*
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+        builder.setSmallIcon(R.mipmap.ic_launcher);
+        builder.setTicker("Job Scheduler");
+        builder.setLargeIcon(getBitmap(imageLink));
+        builder.setContentTitle(appName);
+        builder.setContentText(appPackageName);
+        builder.setContentIntent(pendingIntent);
+        builder.setDefaults(Notification.DEFAULT_SOUND);
+        builder.setStyle(new Notification.BigPictureStyle().bigPicture(getBitmap(imageLink)));
+        builder.setAutoCancel(true);
         // Creae Notification Manager
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(0, builder.build());
+        */
+
+        NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        Notification notif = new Notification.Builder(getApplicationContext())
+                .setContentIntent(pendingIntent)
+                .setContentTitle(appName)
+                .setContentText(appPackageName)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                //.setLargeIcon(result)
+                .setLargeIcon(getBitmap(imageLink))
+                .setStyle(new Notification.BigPictureStyle().bigPicture(getBitmap(imageLink)))
+                .build();
+
+        notif.flags |= Notification.FLAG_AUTO_CANCEL;
+        notificationManager.notify(1, notif);
+
     }
 
 
