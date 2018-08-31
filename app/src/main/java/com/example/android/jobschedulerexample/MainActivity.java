@@ -52,8 +52,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         cancelJobButton.setOnClickListener(this);
 
         ComponentName componentName = new ComponentName(this , JobScheduleService.class);
-        final JobInfo jobInfo = new JobInfo.Builder(++jobID , componentName)
-                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+        final JobInfo jobInfo = new JobInfo.Builder(50 , componentName)
+                //.setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                .setPeriodic(5000)
                 .build();
         JobScheduler jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
         jobScheduler.schedule(jobInfo);
@@ -81,12 +82,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.button_schedule_job:
-                Log.d(TAG, "Scheduling job");
 
+                Log.d(TAG, "Scheduling job");
 
                 ComponentName componentName = new ComponentName(this , JobScheduleService.class);
                 final JobInfo jobInfo = new JobInfo.Builder(++jobID , componentName)
-                        .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
+                        //.setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
+                        .setPeriodic(10000)
                         .build();
                  JobScheduler jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
                  jobScheduler.schedule(jobInfo);
@@ -107,9 +109,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 //or
 //                mJobScheduler.cancelAll();
-
                 break;
-
 
         }
     }
